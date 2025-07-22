@@ -223,4 +223,30 @@ button:hover {
     margin-top: 1em;
   }
 }
+/* スマホ横画面向けのレイアウト調整 */
+@media (max-width: 900px) and (orientation: landscape) {
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
+  /* ✅ 修正ポイント：app に変更 */
+  #app {
+    width: 90%;
+    font-size: 24px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  button {
+    width: 90%;
+    font-size: 20px;
+    margin: 8px 0;
+  }
+}
