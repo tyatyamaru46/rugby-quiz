@@ -223,30 +223,45 @@ button:hover {
     margin-top: 1em;
   }
 }
-/* スマホ横画面向けのレイアウト調整 */
+/* スマホ横画面に対して、全画面表示＋文字サイズ調整 */
 @media (max-width: 900px) and (orientation: landscape) {
-  body {
-    margin: 0;
+  html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     padding: 0;
-    font-size: 18px;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    margin: 0;
   }
 
-  /* ✅ 修正ポイント：app に変更 */
+  #bg-video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+
   #app {
     width: 90%;
-    font-size: 24px;
-    padding: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    padding: 1em;
+    background-color: rgba(255, 255, 255, 0.7); /* 半透明で読みやすく */
+    border-radius: 10px;
+  }
+
+  #question-box {
+    font-size: 1.5rem;
     text-align: center;
+    padding: 1rem;
   }
 
   button {
-    width: 90%;
-    font-size: 20px;
-    margin: 8px 0;
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 1rem;
   }
 }
