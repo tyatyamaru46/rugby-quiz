@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap');
+
+/* 背景設定＋中央揃え */
+body {
+  font-family: 'Kosugi Maru', sans-serif;
+  background-image: url("images/背景 勉強.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.6s ease;
+  background-color: #e7f3ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* #question-box は不要なので削除してOK */
+
+/* appのスタイル調整 */
+#app {
+  background-color: #ffffff;
+  padding: 2em;
+  border-radius: 20px;
+  max-width: 800px;
+  width: 90%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* ← カード感を強調 */
+  border: 2px solid #2196f3;                /* ← 青ラインで締まる */
+
+  text-align: center;
+
+  /* ★ キャラクターにかぶらない右寄せ + 中央より少し上へ */
+  position: absolute;
+  top: 20%;
+  right: 5%;
+  transform: translateY(-20%);
+}
+
+#app h2 {
+  font-size: 1.5em;
+  line-height: 1.8;
+  word-break: keep-all;
+  margin-bottom: 1em;
+}
+
+/* ✅ クイズの問題文の見やすさ改善 */
+#app h2 {
+  font-size: 1.4em;
+  line-height: 1.8;         /* 行の高さを広げて読みやすく */
+  word-break: keep-all;     /* 単語を途中で改行しないようにする */
+}
+
+/* ボタン共通 */
+button {
+  font-size: 1.2em;
+  margin: 10px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  background-color: #2196f3;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+button:hover {
+  background-color: #1976d2;
+}
+
+/* 右上の問題文 */
+
+/* 結果表示エリア */
+.result.correct {
+  background-color: #d4edda;
+  border: 2px solid #28a745;
+  border-radius: 10px;
+  padding: 20px;
+}
+.result.incorrect {
+  background-color: #f8d7da;
+  border: 2px solid #dc3545;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* 正解・不正解アイコン */
+.result-icon {
+  width: 100px;
+  margin-bottom: 10px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* 正解テキスト */
+.correct .result-text {
+  color: green;
+}
+.incorrect .result-text {
+  color: red;
+}
+
+/* アニメーション */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* 終了時にだけ表示される右上の「おつかれさま！」 */
+#thanks-message {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background: white;
+  border-radius: 10px;
+  font-weight: bold;
+  display: none;
+}
+/* 問題番号表示（Q1 / 2）を #app の上中央に固定 */
+#question-count {
+  position: absolute;
+
+  /* #appの中央上に来るよう調整 */
+  top: calc(20% - 60px);      /* ← #appが top: 20% にあるのでその上60pxに表示 */
+  left: 50%;                  /* 画面の中央 */
+  transform: translateX(-50%); /* 自身の幅の半分だけ左に戻って「中央揃え」 */
+
+  font-weight: bold;
+  font-size: 1.2em;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 4px 12px;
+  border-radius: 12px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  z-index: 20;
+}
+/* 残り時間カウントダウンの赤字＋黒縁 */
+#countdown-timer {
+  font-weight: bold;
+  font-size: 1.4em;
+  color: red;
+  text-shadow:
+    -1px -1px 0 black,
+     1px -1px 0 black,
+    -1px  1px 0 black,
+     1px  1px 0 black;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 6px 14px;
+  border-radius: 10px;
+  z-index: 999;
+  margin-top: 200px; /* ← 上との距離だけ調整 */
+  display: inline-block; /* 中央寄せが効きやすくなる */
+}
+
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  pointer-events: none;
+}
+.result button {
+  margin: 10px 5px 0;
+  display: inline-block;
+}
+
+/* ✅ JSで display: none が設定されたときに確実に非表示にする */
+#countdown-timer[style*="display: none"] {
+  display: none !important;
+}
+
+/* 画面幅が600px以下（スマホ）になったら適用 */
+@media screen and (max-width: 600px) {
+  body {
+    flex-direction: column; /* 上から下へ配置 */
+    padding: 1em;
+    height: auto;           /* 高さ100vhを解除して縦スクロールOKに */
+  }
+
+  #app {
+    top: auto;
+    right: auto;
+    transform: none;
+    position: relative;
+    width: 100%;
+    margin-top: 2em;
+    padding: 1.5em;
+  }
+
+  #app h2 {
+    font-size: 1.2em;
+  }
+
+  button {
+    width: 100%;
+    font-size: 1em;
+    padding: 1em;
+  }
+
+  #question-count {
+    position: static;
+    transform: none;
+    margin-bottom: 10px;
+    font-size: 1em;
+  }
+
+  #countdown-timer {
+    font-size: 1.2em;
+    margin-top: 1em;
+    text-align: center;
+  }
+
+  #thanks-message {
+    position: static;
+    text-align: center;
+    margin-top: 1em;
+  }
+}
+
