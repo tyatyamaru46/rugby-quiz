@@ -1,14 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap');
 
-/* 背景設定＋中央揃え */
+/* ===== カラーバリアブル（進捗バー用） ===== */
+:root{
+  --frame-blue:      #2196f3;  /* 枠色（参考） */
+  --progress-track:  #e9eef6;  /* 土台の薄グレー */
+  --progress-fill:   #ffb300;  /* アンバー */
+  --progress-fill-2: #ff8f00;  /* 少し赤みのあるアンバー */
+}
+
+/* ===== ベース ===== */
 body {
   font-family: 'Kosugi Maru', sans-serif;
-  background-image: url("images/背景 勉強.png");
+  /* background-image: url("images/背景 勉強.png"); */ /* 画像背景を無効化 */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   transition: background-image 0.6s ease;
-  background-color: #e7f3ff;
+  background-color: #e7f3ff; /* 動画が読み込まれるまでの背景色 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,21 +24,16 @@ body {
   margin: 0;
 }
 
-/* #question-box は不要なので削除してOK */
-
-/* appのスタイル調整 */
+/* ===== 基本のクイズボックス ===== */
 #app {
   background-color: #ffffff;
   padding: 2em;
   border-radius: 20px;
   max-width: 800px;
   width: 90%;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* ← カード感を強調 */
-  border: 2px solid #2196f3;                /* ← 青ラインで締まる */
-
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--frame-blue);
   text-align: center;
-
-  /* ★ キャラクターにかぶらない右寄せ + 中央より少し上へ */
   position: absolute;
   top: 20%;
   right: 5%;
@@ -38,38 +41,60 @@ body {
 }
 
 #app h2 {
-  font-size: 1.5em;
+  font-size: 1.4em;
   line-height: 1.8;
   word-break: keep-all;
   margin-bottom: 1em;
+  color: #2c3e50; /* 文字色を黒に戻す */
 }
 
-/* ✅ クイズの問題文の見やすさ改善 */
-#app h2 {
-  font-size: 1.4em;
-  line-height: 1.8;         /* 行の高さを広げて読みやすく */
-  word-break: keep-all;     /* 単語を途中で改行しないようにする */
-}
-
-/* ボタン共通 */
+/* ===== 基本のボタン ===== */
 button {
   font-size: 1.2em;
   margin: 10px;
   padding: 12px 24px;
   border: none;
   border-radius: 10px;
-  background-color: #2196f3;
+  background-color: var(--frame-blue);
   color: white;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
 }
 button:hover {
   background-color: #1976d2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-/* 右上の問題文 */
+/* ===== 結果画面のみグラスモーフィズムを適用 ===== */
+#app.result-screen {
+  background: rgba(0, 0, 0, 0.35); /* 半透明の黒 */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari対応 */
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
 
-/* 結果表示エリア */
+/* 結果画面の文字色を調整 */
+#app.result-screen h2,
+#app.result-screen h3,
+#app.result-screen p {
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* 結果画面の「もう一度」ボタンをグラスモーフィズムに */
+#app.result-screen .result-summary button {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+#app.result-screen .result-summary button:hover {
+  background: linear-gradient(45deg, rgba(255,255,255,0.3), rgba(255,255,255,0.2));
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
 .result.correct {
   background-color: #d4edda;
   border: 2px solid #28a745;
@@ -83,33 +108,20 @@ button:hover {
   padding: 20px;
 }
 
-/* 正解・不正解アイコン */
 .result-icon {
   width: 100px;
   margin-bottom: 10px;
   animation: fadeIn 0.6s ease-out;
 }
 
-/* 正解テキスト */
-.correct .result-text {
-  color: green;
-}
-.incorrect .result-text {
-  color: red;
+.correct .result-text { color: green; }
+.incorrect .result-text { color: red; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
-/* アニメーション */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-/* 終了時にだけ表示される右上の「おつかれさま！」 */
 #thanks-message {
   position: absolute;
   top: 20px;
@@ -120,15 +132,12 @@ button:hover {
   font-weight: bold;
   display: none;
 }
-/* 問題番号表示（Q1 / 2）を #app の上中央に固定 */
+
 #question-count {
   position: absolute;
-
-  /* #appの中央上に来るよう調整 */
-  top: calc(20% - 60px);      /* ← #appが top: 20% にあるのでその上60pxに表示 */
-  left: 50%;                  /* 画面の中央 */
-  transform: translateX(-50%); /* 自身の幅の半分だけ左に戻って「中央揃え」 */
-
+  top: calc(20% - 60px);
+  left: 50%;
+  transform: translateX(-50%);
   font-weight: bold;
   font-size: 1.2em;
   background-color: rgba(255, 255, 255, 0.95);
@@ -138,7 +147,7 @@ button:hover {
   white-space: nowrap;
   z-index: 20;
 }
-/* 残り時間カウントダウンの赤字＋黒縁 */
+
 #countdown-timer {
   font-weight: bold;
   font-size: 1.4em;
@@ -152,8 +161,8 @@ button:hover {
   padding: 6px 14px;
   border-radius: 10px;
   z-index: 999;
-  margin-top: 200px; /* ← 上との距離だけ調整 */
-  display: inline-block; /* 中央寄せが効きやすくなる */
+  margin-top: 200px;
+  display: inline-block;
 }
 
 #bg-video {
@@ -166,110 +175,236 @@ button:hover {
   z-index: -1;
   pointer-events: none;
 }
+
 .result button {
   margin: 10px 5px 0;
   display: inline-block;
+  background: rgba(255, 255, 255, 0.9) !important; /* 透明度を下げて読みやすく */
+  color: #2c3e50 !important; /* 暗い文字色 */
+  font-weight: bold;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
 }
 
-/* ✅ JSで display: none が設定されたときに確実に非表示にする */
-#countdown-timer[style*="display: none"] {
-  display: none !important;
+.result button:hover {
+  background: #fff !important; /* ホバー時は不透明な白 */
+  color: #000 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-/* 画面幅が600px以下（スマホ）になったら適用 */
+#countdown-timer[style*="display: none"] { display: none !important; }
+
+/* ===== フィードバック（○×） ===== */
+#feedback-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; justify-content: center; align-items: center;
+  font-size: 10em;
+  color: white;
+  z-index: 1000;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.1s ease-out, background-color 0.1s ease-out;
+}
+#feedback-overlay.show { opacity: 1; visibility: visible; }
+
+/* 画面フラッシュは無効（背景は常に透明） */
+#feedback-overlay,
+#feedback-overlay.show,
+#feedback-overlay.correct,
+#feedback-overlay.incorrect { background: transparent !important; }
+
+/* 〇/×の配置（JSで left/top を指定） */
+#feedback-mark{
+  position: fixed;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.3s ease-out;
+  pointer-events: none;
+}
+#feedback-overlay.show #feedback-mark { transform: translate(-50%, -50%) scale(1); }
+
+/* 〇/×の視認性 */
+#feedback-mark { text-shadow: 0 4px 18px rgba(0,0,0,.35); }
+#feedback-mark.correct   { color: #2e7d32; }
+#feedback-mark.incorrect { color: #c62828; }
+#feedback-overlay.correct   #feedback-mark { color: #2e7d32 !important; }
+#feedback-overlay.incorrect #feedback-mark { color: #c62828 !important; }
+
+/* ===== ミュートボタン ===== */
+#mute-button {
+  position: fixed;
+  bottom: 20px; right: 20px;
+  font-size: 1.5em;
+  padding: 10px 15px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white; border: none; cursor: pointer;
+  z-index: 1001;
+}
+#mute-button.muted { background-color: rgba(255, 0, 0, 0.5); }
+
+/* ===== トースト ===== */
+#toast{
+  position:fixed; top:12px; left:50%; transform:translateX(-50%);
+  background:#fff; color:#111; padding:10px 16px; border-radius:12px;
+  box-shadow:0 6px 30px rgba(0,0,0,.15); font-weight:700; display:none; z-index:1000;
+}
+#toast.show{ display:block; animation:toastIn .18s ease, toastOut .18s ease 1.2s forwards; }
+#toast.correct{ border-left:6px solid #2e7d32; }
+#toast.incorrect{ border-left:6px solid #c62828; }
+@keyframes toastIn{ from{opacity:0; transform:translate(-50%,-6px);} to{opacity:1; transform:translate(-50%,0);} }
+@keyframes toastOut{ to{opacity:0; transform:translate(-50%,-6px);} }
+
+/* ===== 解答ボタンのマイクロインタラクション ===== */
+.answer-btn.correct{
+  background:#e6f4ea !important; border:2px solid #2e7d32 !important; color:#1b5e20 !important;
+  animation:pop .35s ease;
+}
+.answer-btn.incorrect{
+  background:#fdecea !important; border:2px solid #c62828 !important; color:#7f1d1d !important;
+  animation:shake .35s ease;
+}
+@keyframes pop{ 0%{transform:scale(.96);} 50%{transform:scale(1.04);} 100%{transform:scale(1);} }
+@keyframes shake{
+  10%,90%{transform:translateX(-2px);}
+  20%,80%{transform:translateX(4px);}
+  30%,50%,70%{transform:translateX(-6px);}
+  40%,60%{transform:translateX(6px);}
+}
+
+/* 動きを苦手な人のOS設定を尊重 */
+@media (prefers-reduced-motion: reduce){
+  .answer-btn.correct,.answer-btn.incorrect,#toast{ animation:none !important; }
+}
+
+/* ===== 結果画面のレイアウト補正 ===== */
+#app.result-screen{
+  position: relative;
+  top: auto; right: auto; transform: none;
+  margin: 48px auto 64px;
+  width: 90%; max-width: 800px;
+}
+@media (max-width: 600px){
+  #app.result-screen{ margin: 24px auto 40px; }
+}
+.result-summary{ margin-top:80px; }
+
+body.result-mode{
+  align-items: flex-start;   /* 中央揃え→上寄せ */
+  height: auto;              /* 100vh縛り解除   */
+  min-height: 100vh;
+}
+
+/* ====== まちがえた問題と正解：見やすいカード表示 ====== */
+.wrong-list{
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: grid;
+  gap: 14px;
+}
+.wrong-item{
+  background: #fff;
+  border: 1px solid #ffcdd2;          /* 薄い赤枠 */
+  border-left: 8px solid #c62828;      /* 左帯で“誤答”を示す */
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.wrong-q{
+  font-weight: 700;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+/* ラベルと答えを横並びで */
+.wrong-answers{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  margin-top: 2px;
+}
+
+/* バッジ（ラベル） */
+.badge{
+  display: inline-block;
+  font-size: .82rem;
+  padding: 2px 10px;
+  border-radius: 999px;
+  user-select: none;
+}
+.badge-correct{ background:#e6f4ea; color:#1b5e20; border:1px solid #2e7d32; }
+.badge-your   { background:#fdecea; color:#7f1d1d; border:1px solid #c62828; }
+
+/* テキスト（答え） */
+.ans{ display:inline-block; }
+.ans-correct{ color:#1b5e20; font-weight:700; }
+.ans-your{ color:#c62828; font-weight:700; text-decoration: underline; }
+
+/* 解説（あれば） */
+.wrong-exp{
+  margin-top: 8px;
+  color: #37474f;
+  background: #f7fbff;
+  border-left: 4px solid #64b5f6;
+  padding: 8px 10px;
+  border-radius: 8px;
+  line-height: 1.7;
+}
+
+/* モバイルで読みやすく */
+@media (max-width: 600px){
+  .wrong-answers{ flex-direction: column; align-items: flex-start; }
+}
+
+
+/* ===== 進捗バー（アンバー配色） ===== */
+#progress{
+  height: 6px;
+  background: var(--progress-track);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+#progress > span{
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--progress-fill), var(--progress-fill-2));
+  box-shadow: 0 0 0 1px rgba(0,0,0,.04) inset;
+  transition: width .35s ease;  /* 伸びの滑らかさ */
+}
+@media (max-width: 600px){
+  #progress{ height: 4px; margin-bottom: 10px; }
+}
+
+/* ===== レイアウト調整（レスポンシブ） ===== */
 @media screen and (max-width: 600px) {
   body {
-    flex-direction: column; /* 上から下へ配置 */
+    flex-direction: column;
     padding: 1em;
-    height: auto;           /* 高さ100vhを解除して縦スクロールOKに */
+    height: auto;
   }
-
   #app {
-    top: auto;
-    right: auto;
-    transform: none;
-    position: relative;
-    width: 100%;
-    margin-top: 2em;
-    padding: 1.5em;
+    top: auto; right: auto; transform: none;
+    position: relative; width: 100%;
+    margin-top: 2em; padding: 1.5em;
   }
-
-  #app h2 {
-    font-size: 1.2em;
-  }
-
-
-
-
-  button {
-    width: 100%;
-    font-size: 1em;
-    padding: 1em;
-  }
-
-  #question-count {
-    position: static;
-    transform: none;
-    margin-bottom: 10px;
-    font-size: 1em;
-  }
-
-  #countdown-timer {
-    font-size: 1.2em;
-    margin-top: 1em;
-    text-align: center;
-  }
-
-  #thanks-message {
-    position: static;
-    text-align: center;
-    margin-top: 1em;
-  }
+  #app h2 { font-size: 1.2em; }
+  button { width: 100%; font-size: 1em; padding: 1em; }
+  #question-count { position: static; transform: none; margin-bottom: 10px; font-size: 1em; }
+  #countdown-timer { font-size: 1.2em; margin-top: 1em; text-align: center; }
+  #thanks-message { position: static; text-align: center; margin-top: 1em; }
 }
-/* スマホ横画面に対して、全画面表示＋文字サイズ調整 */
+
 @media (max-width: 900px) and (orientation: landscape) {
-  html, body {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-  }
-
-  #bg-video {
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
-  }
-
+  html, body { width: 100vw; height: 100vh; overflow: hidden; padding: 0; margin: 0; }
+  #bg-video { width: 100vw; height: 100vh; object-fit: cover; position: fixed; top: 0; left: 0; z-index: -1; }
   #app {
-    width: 90%;
-    max-width: 600px;
-    margin: 0 auto;
-    font-size: 1.2rem;
-    padding: 1em;
-    background-color: rgba(255, 255, 255, 0.7); /* 半透明で読みやすく */
+    width: 90%; max-width: 600px; margin: 0 auto;
+    font-size: 1.2rem; padding: 1em;
+    background-color: rgba(255, 255, 255, 0.7);
     border-radius: 10px;
-  }
-
-/* デフォルトのレイアウト（PCなど広い画面用） */
-#question-box {
-  width: 50vw;         /* 横幅：画面の50% */
-  max-width: 800px;    /* 最大800pxまで */
-  margin: 0 auto;
-  padding: 1em;
-  border-radius: 10px;
-  background-color: white;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-}
-
-/* スマホなど狭い画面（768px以下）のとき */
-@media (max-width: 768px) {
-  #question-box {
-    width: 90vw;       /* 画面の90%を使う */
   }
 }

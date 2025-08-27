@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Focus Before/After Demo</title>
+<style>
+  :root{ --blue:#2196f3; --bg:#f5f7fb; }
+  body{ margin:0; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; background:var(--bg); }
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:0; min-height:100vh; }
+  .pane{ padding:40px 28px; }
+  .title{ font-weight:800; letter-spacing:.02em; }
+  .card{ background:#fff; border:1px solid #e5e9f2; border-radius:16px; padding:24px; margin-top:12px; box-shadow:0 8px 24px rgba(29,32,38,.06); }
+  .btn{ display:inline-block; min-width:200px; min-height:48px; padding:12px 20px; font-size:16px; border-radius:12px;
+        border:none; color:#fff; background:var(--blue); cursor:pointer; margin:8px 8px 0 0; }
+  .btn:active{ transform:translateY(1px); }
+
+  /* ====== AFTER 側だけに適用するフォーカス可視化 ====== */
+  .after .btn:focus-visible{
+    outline:none;
+    box-shadow:
+      0 0 0 3px rgba(33,150,243,.35),
+      0 0 0 6px rgba(255,255,255,.95);
+  }
+
+  /* 見やすいように左右で背景を少し変える */
+  .before{ background:linear-gradient(#f9fbff,#eef2f9); }
+  .after{  background:linear-gradient(#f9fff9,#eef8f0); }
+</style>
+
+<div class="grid">
+  <section class="pane before">
+    <h2 class="title">Before（既存）</h2>
+    <div class="card">
+      <p>Tab キーでフォーカス移動してみてください（枠の変化がほぼ無し）</p>
+      <button class="btn">〇</button>
+      <button class="btn">×</button>
+      <button class="btn">もういちどチャレンジ！</button>
+    </div>
+  </section>
+
+  <section class="pane after">
+    <h2 class="title">After（提案：フォーカス見やすく）</h2>
+    <div class="card">
+      <p>Tab キーで移動 → 青みの外枠（ダブルリング）が出ます</p>
+      <button class="btn">〇</button>
+      <button class="btn">×</button>
+      <button class="btn">もういちどチャレンジ！</button>
+    </div>
+  </section>
+</div>
+</html>
