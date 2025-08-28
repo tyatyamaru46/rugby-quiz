@@ -391,7 +391,7 @@ body.result-mode{
     position: relative; width: 100%;
     margin-top: 2em; padding: 1.5em;
   }
-  #app h2 { font-size: 1.2em; }
+  #app h2 { font-size: 1.2em; word-break: break-word; }
   button { width: 100%; font-size: 1em; padding: 1em; }
   #question-count { position: static; transform: none; margin-bottom: 10px; font-size: 1em; }
   #countdown-timer { font-size: 1.2em; margin-top: 1em; text-align: center; }
