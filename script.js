@@ -49,7 +49,7 @@ async function loadQuizData() {
     return;
   }
   if (location.protocol === 'http:' || location.protocol === 'https:') {
-    const res = await fetch('quiz-questions.json?v=amber4', { cache: 'no-cache' });
+    const res = await fetch('./quiz-questions.json?v=amber4', { cache: 'no-cache' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     quiz = await res.json();
     return;

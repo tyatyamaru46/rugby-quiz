@@ -11,7 +11,7 @@
 /* ===== ベース ===== */
 body {
   font-family: 'Kosugi Maru', sans-serif;
-  /* background-image: url("images/背景 勉強.png"); */ /* 画像背景を無効化 */
+  /*   background-image: url("./images/背景 勉強.png"); */ /* 画像背景を無効化 */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
