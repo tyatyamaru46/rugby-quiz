@@ -299,12 +299,16 @@ function restart() {
 }
 
 function startQuiz(level) {
-  selectedDifficulty = level;
-  const body = document.body;
-  body.classList.remove('theme-easy', 'theme-medium', 'theme-hard');
-  body.classList.add(`theme-${level}`);
-  if (app) app.innerHTML = '';
-  restart();
+  if (level === 'easy') {
+    selectedDifficulty = level;
+    const body = document.body;
+    body.classList.remove('theme-easy', 'theme-medium', 'theme-hard');
+    body.classList.add(`theme-${level}`);
+    if (app) app.innerHTML = '';
+    restart();
+  } else {
+    alert('この難易度は現在準備中です。お楽しみに！');
+  }
 }
 
 // ========================== 初期化（一本化） ==========================
