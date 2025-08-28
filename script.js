@@ -210,7 +210,7 @@ function showResult() {
     <div class="result-summary">
       <p>今回のスコア：${score}問（全${totalCount}問中）</p>
       <p>前回のスコア：${lastScore}問</p>
-      <button onclick="restart()">もう一度チャレンジ！</button>
+      <button onclick="restart()">もう一度チャレンジ！</button><button onclick="showDifficultySelection()" class="btn-secondary">最初の画面に戻る</button>
     </div>`;
   if (score < totalCount && wrongAnswers.length > 0) {
     let wrongList = '<h3>間違えた問題と正解</h3><ul class="wrong-list">';

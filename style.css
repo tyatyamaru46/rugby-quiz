@@ -408,3 +408,15 @@ body.result-mode{
     border-radius: 10px;
   }
 }
+
+/* 結果画面の「最初の画面へ」ボタンのスタイル */
+.result-summary .btn-secondary {
+  background: #fff;
+  color: var(--frame-blue);
+  border: 2px solid var(--frame-blue);
+}
+
+.result-summary .btn-secondary:hover {
+  background: #e7f3ff;
+  color: #1976d2;
+}
